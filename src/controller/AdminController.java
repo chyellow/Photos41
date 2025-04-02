@@ -63,7 +63,7 @@ public class AdminController {
         userListView.getSelectionModel().selectedItemProperty().addListener((obs, oldVal, newVal) -> {
             if (newVal != null) {
                 selectedUserLabel.setText(newVal);
-                deleteUserButton.setDisable(newVal.equals("admin"));
+                deleteUserButton.setDisable(newVal.equals("admin") || newVal.equals("stock"));
             } else {
                 selectedUserLabel.setText("No user selected");
                 deleteUserButton.setDisable(true);

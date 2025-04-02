@@ -67,7 +67,7 @@ public class UserManager {
      */
     public boolean deleteUser(String username) {
         // Don't allow deleting the admin user
-        if (username.equals("admin")) {
+        if (username.equals("admin") || username.equals("stock")) {
             return false;
         }
         
