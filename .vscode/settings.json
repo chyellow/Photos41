@@ -1,6 +1,7 @@
 {
     "java.project.sourcePaths": [
-        "Photos41/src"
+        "Photos41/src",
+        "src"
     ],
     "java.project.outputPath": "bin",
     "java.project.referencedLibraries": [
