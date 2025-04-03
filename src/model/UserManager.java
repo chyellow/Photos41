@@ -1,6 +1,7 @@
 package model;
 
 import java.io.*;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -10,6 +11,7 @@ import java.util.List;
 public class UserManager {
     private static final String DATA_DIR = "data";
     private static final String USERS_FILE = DATA_DIR + File.separator + "users.ser";
+    private static final String STOCK_FOLDER = "stock";
     
     private List<User> users;
     private User currentUser;
@@ -25,8 +27,43 @@ public class UserManager {
         if (!userExists("admin")) {
             createUser("admin");
         }
+
+        if (!userExists("stock")) {
+            createUser("stock");
+            initializeStockUser();
+        }
+
     }
     
+    private void initializeStockUser() {
+    User stockUser = getUser("stock");
+    if (stockUser != null && stockUser.getAlbums().isEmpty()) {
+        Album dylanAlbum = new Album("dylan");
+        stockUser.addAlbum(dylanAlbum);
+
+        // Predefined file paths for stock photos
+        String[] fileLoc = {
+            "src/stock/dylan1.jpg", "src/stock/dylan2.jpg", "src/stock/dylan3.jpg",
+            "src/stock/dylan4.png", "src/stock/dylan5.png"
+        };
+
+        // Add photos to the "dylan" album
+        for (String filePath : fileLoc) {
+            File photoFile = new File(filePath);
+            if (photoFile.exists()) {
+                // Create a Photo object with the file path and current date/time
+                Photo photo = new Photo(photoFile.getAbsolutePath(), LocalDateTime.now());
+                dylanAlbum.addPhoto(photo);
+            } else {
+                //System.out.println("File not found: " + filePath);
+            }
+        }
+
+        // Save the updated stock user
+        saveUsers();
+    }
+}
+
     /**
      * Checks if a user with the specified username exists.
      * 
