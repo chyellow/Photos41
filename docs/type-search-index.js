@@ -1,1 +1,1 @@
-typeSearchIndex = [{"l":"All Classes and Interfaces","u":"allclasses-index.html"},{"p":"model","l":"PhotoApp"}];updateSearchResults();
+typeSearchIndex = [{"p":"model","l":"Album"},{"l":"All Classes and Interfaces","u":"allclasses-index.html"},{"p":"model","l":"Photo"},{"p":"model","l":"PhotoApp"},{"p":"model","l":"User"},{"p":"model","l":"UserManager"}];updateSearchResults();
