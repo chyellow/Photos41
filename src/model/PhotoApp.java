@@ -22,6 +22,7 @@ public class PhotoApp extends Application {
             Parent root = loader.load();
 
             Scene scene = new Scene(root, 520, 400);
+            scene.getStylesheets().add(getClass().getResource("/view/styles.css").toExternalForm());
             primaryStage.setTitle("Photo App - Login");
             primaryStage.setScene(scene);
             primaryStage.show();

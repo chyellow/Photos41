@@ -117,6 +117,7 @@ private void handleLogin(ActionEvent event) {
             
             AlbumController controller = loader.getController();
             controller.setUserManager(userManager);
+            controller.setUser(userManager.getCurrentUser()); // Pass the logged-in user
             // Get the controller and pass the user manager
             
             Scene scene = new Scene(root);

@@ -2,20 +2,24 @@
 
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.layout.VBox?>
 <?import javafx.scene.image.ImageView?>
-<?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<VBox fx:id="albumTile" alignment="TOP_CENTER" prefHeight="200.0" prefWidth="200.0" style="-fx-border-color: #dddddd; -fx-border-radius: 5; -fx-background-color: white;" xmlns="http://javafx.com/javafx/21.0.6" xmlns:fx="http://javafx.com/fxml/1">
+<VBox fx:id="albumTile" alignment="TOP_CENTER" prefHeight="200.0" prefWidth="200.0"
+      style="-fx-border-color: #dddddd; -fx-border-radius: 5; -fx-background-color: white; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 5, 0, 0, 1); -fx-cursor: hand;"
+      xmlns="http://javafx.com/javafx/21.0.6" xmlns:fx="http://javafx.com/fxml/1">
    <children>
       <StackPane prefHeight="150.0" prefWidth="200.0">
          <children>
-            <ImageView fx:id="albumCoverImageView" fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" />
+            <ImageView fx:id="albumCoverImageView" fitHeight="150.0" fitWidth="200.0"
+                       pickOnBounds="true" preserveRatio="true" />
          </children>
       </StackPane>
-      <Label fx:id="albumNameLabel" text="Album Name" wrapText="true">
+      <Label fx:id="albumNameLabel" text="Album Name" wrapText="true"
+             style="-fx-font-weight: bold;">
          <font>
             <Font name="System Bold" size="14.0" />
          </font>
@@ -35,7 +39,8 @@
             <Insets top="2.0" />
          </VBox.margin>
       </HBox>
-      <Label fx:id="dateRangeLabel" text="Date range: N/A" textAlignment="CENTER" wrapText="true">
+      <Label fx:id="dateRangeLabel" text="Date range: N/A" textAlignment="CENTER"
+             wrapText="true" style="-fx-font-style: italic; -fx-text-fill: #666666;">
          <font>
             <Font size="11.0" />
          </font>

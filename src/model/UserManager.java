@@ -32,37 +32,52 @@ public class UserManager {
             createUser("stock");
             initializeStockUser();
         }
-
+        initializeStockUser();
     }
     
     private void initializeStockUser() {
-    User stockUser = getUser("stock");
-    if (stockUser != null && stockUser.getAlbums().isEmpty()) {
-        Album dylanAlbum = new Album("dylan");
-        stockUser.addAlbum(dylanAlbum);
-
-        // Predefined file paths for stock photos
-        String[] fileLoc = {
-            "src/stock/dylan1.jpg", "src/stock/dylan2.jpg", "src/stock/dylan3.jpg",
-            "src/stock/dylan4.png", "src/stock/dylan5.png"
-        };
-
-        // Add photos to the "dylan" album
-        for (String filePath : fileLoc) {
-            File photoFile = new File(filePath);
-            if (photoFile.exists()) {
-                // Create a Photo object with the file path and current date/time
-                Photo photo = new Photo(photoFile.getAbsolutePath(), LocalDateTime.now());
-                dylanAlbum.addPhoto(photo);
+        System.out.println("initializeStockUser() called");
+    
+        User stockUser = getUser("stock");
+        if (stockUser != null) {
+            System.out.println("Stock user found: " + stockUser.getUsername());
+    
+            // Check if the "dylan" album already exists
+            boolean albumExists = stockUser.getAlbums().stream()
+                .anyMatch(album -> album.getName().equalsIgnoreCase("stock"));
+    
+            if (!albumExists) {
+                System.out.println("Adding 'dylan' album to stock user");
+                Album dylanAlbum = new Album("stock");
+                stockUser.addAlbum(dylanAlbum);
+    
+                // Predefined file paths for stock photos
+                String[] fileLoc = {
+                    "src/stock/dylan1.jpg", "src/stock/dylan2.jpg", "src/stock/dylan3.jpg",
+                    "src/stock/dylan4.png", "src/stock/dylan5.png"
+                };
+    
+                // Add photos to the "dylan" album
+                for (String filePath : fileLoc) {
+                    File photoFile = new File(filePath);
+                    if (photoFile.exists()) {
+                        System.out.println("Adding photo: " + filePath);
+                        Photo photo = new Photo(photoFile.getAbsolutePath(), LocalDateTime.now());
+                        dylanAlbum.addPhoto(photo);
+                    } else {
+                        System.out.println("File not found: " + filePath);
+                    }
+                }
+    
+                // Save the updated stock user
+                saveUsers();
             } else {
-                //System.out.println("File not found: " + filePath);
+                System.out.println("'dylan' album already exists for stock user");
             }
+        } else {
+            System.out.println("Stock user not found");
         }
-
-        // Save the updated stock user
-        saveUsers();
     }
-}
 
     /**
      * Checks if a user with the specified username exists.

@@ -51,6 +51,12 @@ public class Album implements Serializable {
         return photos;
     }
     
+    public Photo getCoverPhoto() {
+        if (photos.isEmpty()) {
+            return null;
+        }
+        return photos.get(0);
+    }
     /**
      * Adds a photo to this album.
      * 
