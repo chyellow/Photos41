@@ -1,25 +1,31 @@
 {
     "version": "2.0.0",
     "tasks": [
-        {
-            "type": "java",
-            "label": "build",
-            "command": "javac",
-            "args": [
-                "--module-path",
-                "C:/Program Files/Java/javafx-sdk-21.0.6/lib",
-                "--add-modules",
-                "javafx.controls,javafx.fxml",
-                "-d",
-                "bin",
-                "src/model/PhotoApp.java"
-            ],
-            "group": {
-                "kind": "build",
-                "isDefault": true
-            },
-            "problemMatcher": ["$javac"],
-            "detail": "Compiles the Java project with JavaFX dependencies."
-        }
+      {
+        "label": "run-javafx",
+        "type": "shell",
+        "command": "javac",
+        "args": [
+          "--module-path", "C:/Program Files/Java/javafx-sdk-21.0.6/lib",
+          "--add-modules", "javafx.controls,javafx.fxml",
+          "-d", "bin",                 // This ensures compiled files go into the "bin" folder
+          "src/model/PhotoApp.java"
+        ],
+        "group": "build",
+        "problemMatcher": []
+      },
+      {
+        "label": "launch-javafx",
+        "type": "shell",
+        "command": "java",
+        "args": [
+          "--module-path", "C:/Program Files/Java/javafx-sdk-21.0.6/lib",
+          "--add-modules", "javafx.controls,javafx.fxml",
+          "-cp", "bin",                 // This ensures the runtime will use the "bin" folder
+          "model.PhotoApp"
+        ],
+        "group": "build",
+        "dependsOn": "run-javafx"
+      }
     ]
-}
+  }
