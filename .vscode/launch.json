@@ -1,22 +1,12 @@
 {
-    "version": "0.2.0",
-    "configurations": [
+  "version": "0.2.0",
+  "configurations": [
       {
-        "type": "cppdbg",
-        "name": "Launch JavaFX App",
-        "request": "launch",
-        "program": "run",
-        "args": [],
-        "windows": {
-          "command": "cmd.exe",
-          "args": [
-        "--module-path", "C:/Program Files/Java/javafx-sdk-21.0.6/lib",
-        "--add-modules", "javafx.controls,javafx.fxml",
-        "-cp", "bin",
-        "model.PhotoApp"
-        ]
-        },
-        "preLaunchTask": "launch-javafx"
+          "type": "java",
+          "request": "launch",
+          "name": "Launch PhotoApp",
+          "mainClass": "model.PhotoApp",
+          "vmArgs": "--module-path 'C:/Program Files/Java/javafx-sdk-21.0.6/lib' --add-modules javafx.controls,javafx.fxml"
       }
-    ]
-  }
+  ]
+}

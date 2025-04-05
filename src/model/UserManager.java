@@ -224,7 +224,7 @@ public class UserManager {
     /**
      * Saves users to disk.
      */
-    private void saveUsers() {
+    public void saveUsers() {
         File dir = new File(DATA_DIR);
         if (!dir.exists()) {
             dir.mkdirs();

@@ -1,8 +1,5 @@
 {
-    "java.project.sourcePaths": [
-        "Photos41/src",
-        "src/model"
-    ],
+    "java.project.sourcePaths": ["src"],
     "java.project.outputPath": "bin",
     "java.project.referencedLibraries": [
         "lib/**/*.jar",
@@ -14,7 +11,5 @@
         "c:\\Program Files\\Java\\javafx-sdk-21.0.6\\lib\\javafx.swing.jar",
         "c:\\Program Files\\Java\\javafx-sdk-21.0.6\\lib\\javafx.web.jar",
         "c:\\Program Files\\Java\\javafx-sdk-21.0.6\\lib\\javafx-swt.jar"
-    ],
-    "java.debug.settings.onBuildFailureProceed": true,
-    "java.jdt.ls.java.home": "C:/Program Files/Java/jdk-24"
+    ]
 }

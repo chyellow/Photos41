@@ -26,6 +26,8 @@ public class AlbumController {
     @FXML
     private TextField newAlbumTextField;
     @FXML
+    private TextField renameAlbumTextField;
+    @FXML
     private Button createAlbumButton;
     @FXML
     private FlowPane albumGridPane;
@@ -94,6 +96,7 @@ public class AlbumController {
         newAlbumTextField.clear();
         statusLabel.setText("Album created: " + albumName);
         loadAlbums();
+        userManager.saveUsers();
     }
 
     private void handleRenameAlbum(ActionEvent event) {
@@ -102,7 +105,7 @@ public class AlbumController {
             return;
         }
         
-        String newName = newAlbumTextField.getText().trim();
+        String newName = renameAlbumTextField.getText().trim();
         if (newName.isEmpty()) {
             statusLabel.setText("Album name cannot be empty.");
             return;
@@ -118,7 +121,9 @@ public class AlbumController {
         
         selectedAlbum.setName(newName);
         statusLabel.setText("Album renamed to: " + newName);
+        renameAlbumTextField.clear();
         loadAlbums();
+        userManager.saveUsers();
     }
     
     private void handleDeleteAlbum(ActionEvent event) {
@@ -139,6 +144,7 @@ public class AlbumController {
         deleteAlbumButton.setDisable(true);
         
         loadAlbums();
+        userManager.saveUsers();
     }
 
     private void handleLogout(ActionEvent event) {
@@ -202,7 +208,7 @@ public class AlbumController {
         deleteAlbumButton.setDisable(false);
         
         // Pre-fill text field with current album name for easy renaming
-        newAlbumTextField.setText(album.getName());
+        renameAlbumTextField.setText(album.getName());
         statusLabel.setText("Selected album: " + album.getName());
     }
     
@@ -227,11 +233,5 @@ public class AlbumController {
         }
     }
 
-    private void showAlert(String title, String message) {
-        Alert alert = new Alert(AlertType.ERROR);
-        alert.setTitle(title);
-        alert.setHeaderText(null);
-        alert.setContentText(message);
-        alert.showAndWait();
-    }
+    
 }

@@ -11,7 +11,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/21.0.6" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.AlbumController">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.AlbumController">
    <top>
       <HBox alignment="CENTER_LEFT" prefHeight="60.0" prefWidth="600.0" style="-fx-background-color: #cc45ff;" BorderPane.alignment="CENTER">
          <children>
@@ -92,7 +92,8 @@
             </Label>
             <HBox alignment="CENTER_RIGHT" HBox.hgrow="ALWAYS">
                <children>
-                  <Button fx:id="renameAlbumButton" disable="true" mnemonicParsing="false" style="-fx-background-color: #45ff8c;" text="Rename Album" textFill="WHITE">
+                  <TextField fx:id="renameAlbumTextField" promptText="New album name" />
+                  <Button fx:id="renameAlbumButton" disable="true" mnemonicParsing="false" prefWidth="116.0" style="-fx-background-color: #45ff8c;" text="Rename Album" textFill="WHITE">
                      <HBox.margin>
                         <Insets right="10.0" />
                      </HBox.margin>
