@@ -183,7 +183,13 @@ public class AlbumController {
             
             // Set up click handling for selection
             albumTile.setOnMouseClicked(event -> {
-                selectAlbum(album, albumTile);
+                if (event.getClickCount() == 2) {
+                    // On double-click, open the album view.
+                    openAlbum(album);
+                } else {
+                    // On single click, select the album.
+                    selectAlbum(album, albumTile);
+                }
             });
             
             albumGridPane.getChildren().add(albumTile);
@@ -216,11 +222,10 @@ public class AlbumController {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/PhotoView.fxml"));
             Parent root = loader.load();
-            
-            //PhotoViewController controller = loader.getController();
-            //controller.setUserManager(userManager);
-            //controller.setUser(currentUser);
-           // controller.setAlbum(album);
+    
+            PhotoViewController controller = loader.getController();
+            controller.setUserManager(userManager);
+            controller.setAlbum(album);
             
             Scene scene = new Scene(root);
             Stage stage = (Stage) albumGridPane.getScene().getWindow();
