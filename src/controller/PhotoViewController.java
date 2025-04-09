@@ -6,6 +6,8 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
+import javafx.scene.control.TextInputDialog;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.FlowPane;
@@ -25,6 +27,14 @@ import java.util.Map;
 public class PhotoViewController {
 
     @FXML
+    private TextField renamePhotoTextField;
+    @FXML
+    private Button renamePhotoButton;
+    @FXML
+    private Button deletePhotoButton;
+    @FXML
+    private Label statusLabel;
+    @FXML
     private Label albumTitleLabel;
     @FXML
     private FlowPane photoFlowPane;
@@ -35,13 +45,24 @@ public class PhotoViewController {
 
     private Album album;
     private UserManager userManager;
-    
+    private Photo selectedPhoto;            // Selected Photo
+    private VBox selectedPhotoTile;          // The actual tile (VBox) selected
+
     // Global cache for Photo instances (keyed by file path)
     private static Map<String, Photo> photoCache = new HashMap<>();
 
     /**
      * Sets the album to display.
      */
+
+     @FXML
+     public void initialize() {
+         renamePhotoButton.setDisable(true);
+         deletePhotoButton.setDisable(true);
+         renamePhotoButton.setOnAction(this::handleRenamePhoto);
+         deletePhotoButton.setOnAction(this::handleDeletePhoto);
+     }
+     
     public void setAlbum(Album album) {
         this.album = album;
         albumTitleLabel.setText("Album: " + album.getName());
@@ -60,22 +81,92 @@ public class PhotoViewController {
      */
     private void loadPhotos() {
         photoFlowPane.getChildren().clear();
+        selectedPhoto = null;
+        selectedPhotoTile = null;
+        
         for (Photo photo : album.getPhotos()) {
-            ImageView imageView = new ImageView();
-            File imageFile = new File(photo.getFilePath());
-            if (imageFile.exists()) {
-                Image image = new Image(imageFile.toURI().toString(), 150, 0, true, true);
-                imageView.setImage(image);
-                imageView.setPreserveRatio(true);
-                imageView.setFitWidth(150);
-            } else {
-                // Fallback to default image if file not found
-                imageView.setImage(new Image(getClass().getResourceAsStream("/stock/default_album.png")));
-            }
-            VBox photoContainer = new VBox(imageView);
-            photoContainer.setStyle("-fx-border-color: #dddddd; -fx-padding: 5;");
-            photoFlowPane.getChildren().add(photoContainer);
+            PhotoTileController tileController = new PhotoTileController(photo);
+            VBox photoTile = tileController.getPhotoTile();
+            
+            // Set up click handling for selection
+            photoTile.setOnMouseClicked(event -> {
+                if (event.getClickCount() == 2) {
+                    // Double-click behavior (optional, e.g., view photo full-size)
+                } else {
+                    // Single-click to select
+                    selectPhoto(photo, photoTile);
+                }
+            });
+    
+            photoFlowPane.getChildren().add(photoTile);
         }
+    }
+    
+    private void selectPhoto(Photo photo, VBox photoTile) {
+        if (selectedPhotoTile != null) {
+            selectedPhotoTile.setStyle("-fx-border-color: #dddddd; -fx-border-radius: 5; -fx-background-color: white; " +
+                                       "-fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 5, 0, 0, 1); -fx-cursor: hand;");
+        }
+    
+        selectedPhoto = photo;
+        selectedPhotoTile = photoTile;
+    
+    
+        // Enable rename and delete buttons
+        renamePhotoButton.setDisable(false);
+        deletePhotoButton.setDisable(false);
+    
+        // Fill the rename text field
+        renamePhotoTextField.setText(photo.getCaption() == null ? "" : photo.getCaption());
+    
+        // Update status
+        statusLabel.setText("Selected photo: " + (photo.getCaption() == null ? "No Caption" : photo.getCaption()));
+    }
+    
+    
+    
+    
+    @FXML
+    private void handleRenamePhoto(ActionEvent event) {
+        if (selectedPhoto == null) {
+            statusLabel.setText("No photo selected.");
+            return;
+        }
+
+        String newCaption = renamePhotoTextField.getText().trim();
+        if (newCaption.isEmpty()) {
+            statusLabel.setText("Caption cannot be empty.");
+            return;
+        }
+
+        // Update the photo's caption
+        selectedPhoto.setCaption(newCaption);
+
+        statusLabel.setText("Photo renamed to: " + newCaption);
+        renamePhotoTextField.clear(); // Clear the input field
+        userManager.saveUsers(); // Save the updated caption
+        loadPhotos(); // Refresh photo tiles
+    }
+
+    @FXML
+    private void handleDeletePhoto(ActionEvent event) {
+        if (selectedPhoto == null) {
+            statusLabel.setText("No photo selected.");
+            return;
+        }
+
+        album.removePhoto(selectedPhoto);  // Remove from album
+        
+        statusLabel.setText("Photo deleted.");
+        selectedPhoto = null;
+        selectedPhotoTile = null;
+
+        // Disable buttons since no photo is selected
+        renamePhotoButton.setDisable(true);
+        deletePhotoButton.setDisable(true);
+
+        loadPhotos();        // Refresh photo tiles
+        userManager.saveUsers(); // Save changes
     }
 
     /**

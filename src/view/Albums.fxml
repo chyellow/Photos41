@@ -82,7 +82,7 @@
    <bottom>
       <HBox alignment="CENTER_LEFT" prefHeight="40.0" prefWidth="200.0" spacing="10.0" BorderPane.alignment="CENTER">
          <children>
-            <Label fx:id="statusLabel" textFill="#cc45ff">
+            <Label fx:id="statusLabel" textFill="#000000">
                <font>
                   <Font name="System Italic" size="12.0" />
                </font>

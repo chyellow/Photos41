@@ -198,16 +198,13 @@ public class AlbumController {
     
     private void selectAlbum(Album album, VBox albumTile) {
         // Deselect previous selection if any
-        if (selectedAlbumTile != null) {
-            selectedAlbumTile.getStyleClass().remove("selected-album");
-        }
         
         // Update selection
         selectedAlbum = album;
         selectedAlbumTile = albumTile;
         
         // Apply selection style
-        albumTile.getStyleClass().add("selected-album");
+        //albumTile.getStyleClass().add("selected-album");
         
         // Enable buttons
         renameAlbumButton.setDisable(false);
