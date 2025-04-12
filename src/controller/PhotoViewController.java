@@ -3,8 +3,10 @@ package controller;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.ChoiceDialog;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.control.TextInputDialog;
@@ -21,11 +23,16 @@ import model.UserManager;
 import java.io.File;
 import java.io.IOException;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class PhotoViewController {
 
+    @FXML
+    private Button copyMovePhotoButton;
+    
     @FXML
     private TextField renamePhotoTextField;
     @FXML
@@ -59,6 +66,8 @@ public class PhotoViewController {
      public void initialize() {
          renamePhotoButton.setDisable(true);
          deletePhotoButton.setDisable(true);
+         renamePhotoButton.setDisable(false);
+         copyMovePhotoButton.setDisable(false);  // ✅ enable Copy/Move button
          renamePhotoButton.setOnAction(this::handleRenamePhoto);
          deletePhotoButton.setOnAction(this::handleDeletePhoto);
      }
@@ -124,7 +133,44 @@ public class PhotoViewController {
     }
     
     
-    
+    @FXML
+    private void handleCopyMovePhoto(ActionEvent event) {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/CopyMovePhotoPopup.fxml"));
+            Parent root = loader.load();
+            
+            CopyMovePhotoPopupController popupController = loader.getController();
+            
+            List<Album> targetAlbums = userManager.getCurrentUser().getAlbums().stream()
+                .filter(a -> !a.equals(album)) // not current album
+                .filter(a -> !a.getPhotos().contains(selectedPhoto)) // not already contains
+                .toList();
+            
+            popupController.setAlbums(targetAlbums);
+
+            popupController.setOnConfirm((targetAlbum, isMove) -> {
+                targetAlbum.addPhoto(selectedPhoto);
+                if (isMove) {
+                    album.removePhoto(selectedPhoto); // ✅ Remove from current album
+                    loadPhotos(); // Refresh photo tiles because photo moved away
+                }
+                statusLabel.setText(isMove ? "Photo moved to: " + targetAlbum.getName()
+                                        : "Photo copied to: " + targetAlbum.getName());
+                userManager.saveUsers();
+            });
+
+            Stage stage = new Stage();
+            stage.setTitle("Copy or Move Photo");
+            stage.setScene(new Scene(root));
+            stage.show();
+            
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+
+
     
     @FXML
     private void handleRenamePhoto(ActionEvent event) {
@@ -169,6 +215,20 @@ public class PhotoViewController {
         userManager.saveUsers(); // Save changes
     }
 
+
+    private Photo findExistingPhoto(String path) {
+        for (Album a : userManager.getCurrentUser().getAlbums()) {
+            for (Photo p : a.getPhotos()) {
+                if (p.getFilePath().equals(path)) {
+                    return p; // Found a matching photo by path
+                }
+            }
+        }
+        return null; // No match
+    }
+    
+
+
     /**
      * Handles the Add Photo button click.
      * Allows the user to select an image file and adds the photo to the album,
@@ -185,19 +245,25 @@ public class PhotoViewController {
         File selectedFile = fileChooser.showOpenDialog(stage);
         if (selectedFile != null) {
             String path = selectedFile.getAbsolutePath();
-            Photo photo = photoCache.get(path);
-            if (photo == null) {
+
+           
+            Photo existingPhoto = findExistingPhoto(path);
+
+            Photo photo;
+            if (existingPhoto != null) {
+                photo = existingPhoto; // Reuse existing
+            } else {
                 photo = new Photo(path, LocalDateTime.now());
-                photoCache.put(path, photo);
             }
-            // Check if the photo is already in the album before adding
+
             if (!album.getPhotos().contains(photo)) {
                 album.addPhoto(photo);
             }
-            userManager.saveUsers(); // Save changes
-            loadPhotos(); // Refresh the photo view
+            userManager.saveUsers();
+            loadPhotos();
         }
     }
+
 
     /**
      * Handles the Back button click.

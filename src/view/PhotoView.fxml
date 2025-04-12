@@ -12,7 +12,7 @@
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.PhotoViewController" prefHeight="600.0" prefWidth="900.0">
+<BorderPane xmlns="http://javafx.com/javafx/21.0.6" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.PhotoViewController" prefHeight="600.0" prefWidth="900.0">
    <top>
       <HBox alignment="CENTER_LEFT" prefHeight="60.0" style="-fx-background-color: #cc45ff;" BorderPane.alignment="CENTER">
          <children>
@@ -63,6 +63,7 @@
     <TextField fx:id="renamePhotoTextField" promptText="New caption" prefWidth="150.0" />
 
     <Button text="Rename Photo" fx:id="renamePhotoButton" disable="true" style="-fx-background-color: #45b6ff;" textFill="WHITE"/>
+    <Button text="Copy/Move Photo" fx:id="copyMovePhotoButton" disable="true" onAction="#handleCopyMovePhoto" style="-fx-background-color: #cc45ff;" textFill="WHITE"/>
 
     <Button text="Delete Photo" fx:id="deletePhotoButton" disable="true" style="-fx-background-color: #ff4545;" textFill="WHITE"/>
 

@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.RadioButton?>
+<?import javafx.scene.control.ToggleGroup?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+
+<BorderPane xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="controller.CopyMovePhotoPopupController" prefHeight="300.0" prefWidth="400.0">
+
+    <top>
+        <VBox spacing="10" alignment="CENTER">
+            <padding>
+                <Insets top="10.0" />
+            </padding>
+            <Label text="Select Album to Copy or Move Photo To:" />
+            
+            <!-- Add radio buttons here -->
+            <HBox spacing="10" alignment="CENTER">
+                <RadioButton text="Copy" fx:id="copyRadioButton" selected="true" />
+                <RadioButton text="Move" fx:id="moveRadioButton" />
+            </HBox>
+        </VBox>
+    </top>
+
+    <center>
+        <VBox alignment="CENTER" spacing="10.0">
+            <padding>
+                <Insets left="20.0" right="20.0" top="10.0" bottom="10.0" />
+            </padding>
+            <ListView fx:id="albumListView" prefHeight="150.0" />
+        </VBox>
+    </center>
+
+    <bottom>
+        <HBox alignment="CENTER" spacing="20.0">
+            <padding>
+                <Insets bottom="10.0" />
+            </padding>
+            <Button text="Confirm" fx:id="confirmButton" />
+            <Button text="Cancel" fx:id="cancelButton" />
+        </HBox>
+    </bottom>
+</BorderPane>

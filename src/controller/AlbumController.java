@@ -47,7 +47,6 @@ public class AlbumController {
     private VBox selectedAlbumTile;
 
     public void setUser(User user) {
-        System.out.println("setUser() called");
         this.currentUser = user;
         this.userAlbums = currentUser.getAlbums();
         loadAlbums();

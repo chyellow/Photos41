@@ -36,18 +36,18 @@ public class UserManager {
     }
     
     private void initializeStockUser() {
-        System.out.println("initializeStockUser() called");
+        //System.out.println("initializeStockUser() called");
     
         User stockUser = getUser("stock");
         if (stockUser != null) {
-            System.out.println("Stock user found: " + stockUser.getUsername());
+            //System.out.println("Stock user found: " + stockUser.getUsername());
     
             // Check if the "dylan" album already exists
             boolean albumExists = stockUser.getAlbums().stream()
                 .anyMatch(album -> album.getName().equalsIgnoreCase("stock"));
     
             if (!albumExists) {
-                System.out.println("Adding 'dylan' album to stock user");
+                //System.out.println("Adding 'dylan' album to stock user");
                 Album dylanAlbum = new Album("stock");
                 stockUser.addAlbum(dylanAlbum);
     
@@ -61,21 +61,21 @@ public class UserManager {
                 for (String filePath : fileLoc) {
                     File photoFile = new File(filePath);
                     if (photoFile.exists()) {
-                        System.out.println("Adding photo: " + filePath);
+                        //System.out.println("Adding photo: " + filePath);
                         Photo photo = new Photo(photoFile.getAbsolutePath(), LocalDateTime.now());
                         dylanAlbum.addPhoto(photo);
                     } else {
-                        System.out.println("File not found: " + filePath);
+                        //System.out.println("File not found: " + filePath);
                     }
                 }
     
                 // Save the updated stock user
                 saveUsers();
             } else {
-                System.out.println("'dylan' album already exists for stock user");
+                //System.out.println("'dylan' album already exists for stock user");
             }
         } else {
-            System.out.println("Stock user not found");
+            //System.out.println("Stock user not found");
         }
     }
 
