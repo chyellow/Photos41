@@ -67,7 +67,7 @@ public class PhotoViewController {
          renamePhotoButton.setDisable(true);
          deletePhotoButton.setDisable(true);
          renamePhotoButton.setDisable(false);
-         copyMovePhotoButton.setDisable(false);  // ✅ enable Copy/Move button
+         copyMovePhotoButton.setDisable(true);  // ✅ enable Copy/Move button
          renamePhotoButton.setOnAction(this::handleRenamePhoto);
          deletePhotoButton.setOnAction(this::handleDeletePhoto);
      }
@@ -124,7 +124,7 @@ public class PhotoViewController {
         // Enable rename and delete buttons
         renamePhotoButton.setDisable(false);
         deletePhotoButton.setDisable(false);
-    
+        copyMovePhotoButton.setDisable(false);  // ✅ enable Copy/Move button
         // Fill the rename text field
         renamePhotoTextField.setText(photo.getCaption() == null ? "" : photo.getCaption());
     
@@ -135,7 +135,12 @@ public class PhotoViewController {
     
     @FXML
     private void handleCopyMovePhoto(ActionEvent event) {
+        if (selectedPhoto == null) {
+            statusLabel.setText("No photo selected.");
+            return;
+        }
         try {
+            
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/CopyMovePhotoPopup.fxml"));
             Parent root = loader.load();
             

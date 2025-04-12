@@ -59,6 +59,9 @@ public class CopyMovePhotoPopupController {
             if (onConfirm != null) {
                 onConfirm.accept(selectedAlbum, isMove);
             }
+            else{
+                confirmButton.setDisable(true);
+            }
             ((Stage) confirmButton.getScene().getWindow()).close();
         }
     }
