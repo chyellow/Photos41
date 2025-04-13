@@ -67,7 +67,7 @@ public class PhotoViewController {
          renamePhotoButton.setDisable(true);
          deletePhotoButton.setDisable(true);
          renamePhotoButton.setDisable(false);
-         copyMovePhotoButton.setDisable(true);  // ✅ enable Copy/Move button
+         copyMovePhotoButton.setDisable(true); 
          renamePhotoButton.setOnAction(this::handleRenamePhoto);
          deletePhotoButton.setOnAction(this::handleDeletePhoto);
      }
