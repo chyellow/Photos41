@@ -16,6 +16,9 @@ import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
+import javafx.scene.control.ListView;
+import javafx.scene.control.TextField;
+import javafx.scene.input.MouseEvent;
 import model.Album;
 import model.Photo;
 import model.UserManager;
@@ -50,6 +53,16 @@ public class PhotoViewController {
     private Button addPhotoButton;
     @FXML
     private Button backButton;
+    @FXML
+    private TextField tagTypeField;
+    @FXML
+    private TextField tagValueField;
+    @FXML
+    private Button addTagButton;
+    @FXML
+    private Button deleteTagButton;
+    @FXML
+    private ListView<String> tagListView;
 
     private Album album;
     private UserManager userManager;
@@ -72,6 +85,8 @@ public class PhotoViewController {
          copyMovePhotoButton.setDisable(true); 
          renamePhotoButton.setOnAction(this::handleRenamePhoto);
          deletePhotoButton.setOnAction(this::handleDeletePhoto);
+         addTagButton.setOnAction(this::handleAddTag);
+         deleteTagButton.setOnAction(this::handleDeleteTag);
      }
      
     public void setAlbum(Album album) {
@@ -133,6 +148,70 @@ public class PhotoViewController {
     
         // Update status
         statusLabel.setText("Selected photo: " + (photo.getCaption() == null ? "No Caption" : photo.getCaption()));
+
+        refreshTagList();
+    }
+
+    @FXML
+    private void handleAddTag(ActionEvent event) {
+        if (selectedPhoto == null) {
+            statusLabel.setText("No photo selected.");
+            return;
+        }
+
+        String tagType = tagTypeField.getText().trim();
+        String tagValue = tagValueField.getText().trim();
+
+        if (tagType.isEmpty() || tagValue.isEmpty()) {
+            statusLabel.setText("Tag type and value cannot be empty.");
+            return;
+        }
+
+        selectedPhoto.addTag(tagType, tagValue);
+        userManager.saveUsers();
+        refreshTagList();
+
+        tagTypeField.clear();
+        tagValueField.clear();
+        statusLabel.setText("Tag added: " + tagType + " = " + tagValue);
+    }
+
+    // 🆕 New Method: Delete Selected Tag
+    @FXML
+    private void handleDeleteTag(ActionEvent event) {
+        if (selectedPhoto == null) {
+            statusLabel.setText("No photo selected.");
+            return;
+        }
+
+        String selectedTagEntry = tagListView.getSelectionModel().getSelectedItem();
+        if (selectedTagEntry == null) {
+            statusLabel.setText("No tag selected.");
+            return;
+        }
+
+        // Parse tagType from "tagType: tagValue"
+        int colonIndex = selectedTagEntry.indexOf(":");
+        if (colonIndex == -1) {
+            statusLabel.setText("Invalid tag format.");
+            return;
+        }
+
+        String tagType = selectedTagEntry.substring(0, colonIndex).trim();
+        selectedPhoto.removeTag(tagType);
+        userManager.saveUsers();
+        refreshTagList();
+        statusLabel.setText("Tag deleted: " + tagType);
+    }
+
+    // 🆕 New Helper: Refresh the ListView of tags
+    private void refreshTagList() {
+        tagListView.getItems().clear();
+        if (selectedPhoto != null) {
+            for (Map.Entry<String, String> entry : selectedPhoto.getTags().entrySet()) {
+                tagListView.getItems().add(entry.getKey() + ": " + entry.getValue());
+            }
+        }
     }
     
     @FXML
