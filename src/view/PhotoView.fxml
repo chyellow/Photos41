@@ -64,6 +64,7 @@
 
     <Button text="Rename Photo" fx:id="renamePhotoButton" disable="true" style="-fx-background-color: #45b6ff;" textFill="WHITE"/>
     <Button text="Copy/Move Photo" fx:id="copyMovePhotoButton" disable="true" onAction="#handleCopyMovePhoto" style="-fx-background-color: #cc45ff;" textFill="WHITE"/>
+    <Button text="Preview Photo" fx:id="previewPhotoButton" disable="true" onAction="#handlePreviewPhoto" style="-fx-background-color: #45b6ff;" textFill="WHITE"/>
 
     <Button text="Delete Photo" fx:id="deletePhotoButton" disable="true" style="-fx-background-color: #ff4545;" textFill="WHITE"/>
 

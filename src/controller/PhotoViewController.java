@@ -32,7 +32,8 @@ public class PhotoViewController {
 
     @FXML
     private Button copyMovePhotoButton;
-    
+    @FXML
+    private Button previewPhotoButton;
     @FXML
     private TextField renamePhotoTextField;
     @FXML
@@ -67,6 +68,7 @@ public class PhotoViewController {
          renamePhotoButton.setDisable(true);
          deletePhotoButton.setDisable(true);
          renamePhotoButton.setDisable(false);
+         previewPhotoButton.setDisable(true);
          copyMovePhotoButton.setDisable(true); 
          renamePhotoButton.setOnAction(this::handleRenamePhoto);
          deletePhotoButton.setOnAction(this::handleDeletePhoto);
@@ -122,6 +124,7 @@ public class PhotoViewController {
     
     
         // Enable rename and delete buttons
+        previewPhotoButton.setDisable(false);
         renamePhotoButton.setDisable(false);
         deletePhotoButton.setDisable(false);
         copyMovePhotoButton.setDisable(false);  // ✅ enable Copy/Move button
@@ -132,7 +135,34 @@ public class PhotoViewController {
         statusLabel.setText("Selected photo: " + (photo.getCaption() == null ? "No Caption" : photo.getCaption()));
     }
     
-    
+    @FXML
+    private void handlePreviewPhoto(ActionEvent event) {
+        if (selectedPhoto == null) {
+            statusLabel.setText("No photo selected.");
+            return;
+        }
+
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/PhotoPreview.fxml"));
+            Parent root = loader.load();
+
+            PhotoPreviewController previewController = loader.getController();
+            List<Photo> albumPhotos = album.getPhotos();
+            int startIndex = albumPhotos.indexOf(selectedPhoto);
+
+            previewController.setPhotos(albumPhotos, startIndex);
+
+            Stage stage = new Stage();
+            stage.setTitle("Photo Preview");
+            stage.setScene(new Scene(root));
+            stage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+
+
     @FXML
     private void handleCopyMovePhoto(ActionEvent event) {
         if (selectedPhoto == null) {
