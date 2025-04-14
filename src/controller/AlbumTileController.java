@@ -14,6 +14,11 @@ import java.io.File;
 import java.io.IOException;
 import java.time.format.DateTimeFormatter;
 
+/**
+ * Controller for a tile representing an album in the Photo App.
+ * Displays the album name, photo count, date range, and a cover photo.
+ * Handles selection and hover effects for the album tile.
+ */
 public class AlbumTileController {
 
     @FXML
@@ -46,9 +51,9 @@ public class AlbumTileController {
         "-fx-border-color: #cc45ff; -fx-border-width: 2; -fx-background-color: #f9eaff;";
 
     /**
-     * Constructor that loads the FXML and initializes the controller
+     * Constructor that loads the FXML layout and initializes the album tile.
      *
-     * @param album The album to display
+     * @param album The album to display.
      */
     public AlbumTileController(Album album) {
         this.album = album;
@@ -57,7 +62,6 @@ public class AlbumTileController {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/AlbumTile.fxml"));
             loader.setController(this);
             albumTile = loader.load();
-
             configureAlbumTile();
         } catch (IOException e) {
             e.printStackTrace();
@@ -67,7 +71,7 @@ public class AlbumTileController {
     }
 
     /**
-     * Configures the album tile with the album's data and interactivity
+     * Configures the album tile UI with album details and sets up interactivity.
      */
     private void configureAlbumTile() {
         albumTile.setStyle(DEFAULT_STYLE);
@@ -101,20 +105,27 @@ public class AlbumTileController {
             setDefaultCoverImage();
         }
 
-        // Add hover effects
         albumTile.setOnMouseEntered(this::handleMouseEnter);
         albumTile.setOnMouseExited(this::handleMouseExit);
-
-        // Add click to select
         albumTile.setOnMouseClicked(event -> setSelected(!selected));
     }
 
+    /**
+     * Handles mouse enter event to apply hover style.
+     *
+     * @param event The MouseEvent triggering this action.
+     */
     private void handleMouseEnter(MouseEvent event) {
         if (!selected) {
             albumTile.setStyle(DEFAULT_STYLE + HOVER_STYLE);
         }
     }
 
+    /**
+     * Handles mouse exit event to remove hover style.
+     *
+     * @param event The MouseEvent triggering this action.
+     */
     private void handleMouseExit(MouseEvent event) {
         if (!selected) {
             albumTile.setStyle(DEFAULT_STYLE);
@@ -122,9 +133,9 @@ public class AlbumTileController {
     }
 
     /**
-     * Sets whether this album tile is selected and updates its style.
+     * Sets whether this album tile is selected and updates its visual style.
      *
-     * @param selected true to apply selected style; false to revert
+     * @param selected True to mark as selected, false to deselect.
      */
     public void setSelected(boolean selected) {
         this.selected = selected;
@@ -135,6 +146,9 @@ public class AlbumTileController {
         }
     }
 
+    /**
+     * Sets a default cover image if the album does not have a cover photo.
+     */
     private void setDefaultCoverImage() {
         Image defaultImage = new Image(getClass().getResourceAsStream("/stock/default_album.png"));
         if (defaultImage != null) {
@@ -142,14 +156,29 @@ public class AlbumTileController {
         }
     }
 
+    /**
+     * Returns the VBox representing this album tile.
+     *
+     * @return The VBox node of the album tile.
+     */
     public VBox getAlbumTile() {
         return albumTile;
     }
 
+    /**
+     * Returns the album associated with this tile.
+     *
+     * @return The Album object.
+     */
     public Album getAlbum() {
         return album;
     }
 
+    /**
+     * Returns whether this tile is currently selected.
+     *
+     * @return True if selected, false otherwise.
+     */
     public boolean isSelected() {
         return selected;
     }

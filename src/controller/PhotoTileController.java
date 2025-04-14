@@ -13,6 +13,11 @@ import java.io.File;
 import java.io.IOException;
 import java.time.format.DateTimeFormatter;
 
+/**
+ * Controller for a tile representing a photo in the Photo App.
+ * Displays the photo's thumbnail, caption, and date.
+ * Handles hover effects for better interactivity.
+ */
 public class PhotoTileController {
 
     @FXML
@@ -34,7 +39,11 @@ public class PhotoTileController {
         "-fx-border-color: #dddddd; -fx-border-radius: 5; -fx-background-color: white; " +
         "-fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 5, 0, 0, 1); -fx-cursor: hand;";
 
-
+    /**
+     * Constructor that loads the FXML layout and initializes the photo tile.
+     *
+     * @param photo The photo to display in this tile.
+     */
     public PhotoTileController(Photo photo) {
         this.photo = photo;
 
@@ -42,7 +51,6 @@ public class PhotoTileController {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/PhotoTile.fxml"));
             loader.setController(this);
             photoTile = loader.load();
-
             configurePhotoTile();
         } catch (IOException e) {
             e.printStackTrace();
@@ -50,6 +58,10 @@ public class PhotoTileController {
         }
     }
 
+    /**
+     * Configures the photo tile with the photo's image, caption, and date,
+     * and sets up hover interactivity.
+     */
     private void configurePhotoTile() {
         photoTile.setStyle(DEFAULT_STYLE);
 
@@ -76,34 +88,57 @@ public class PhotoTileController {
             dateLabel.setText("Unknown Date");
         }
 
-        // Hover and select styles
+        // Hover effects
         photoTile.setOnMouseEntered(this::handleMouseEnter);
         photoTile.setOnMouseExited(this::handleMouseExit);
-        //photoTile.setOnMouseClicked(event -> setSelected(!selected));
+        // Selection on click can be added if needed
     }
 
+    /**
+     * Handles mouse entering the tile area to apply hover style.
+     *
+     * @param event The MouseEvent triggering this action.
+     */
     private void handleMouseEnter(MouseEvent event) {
         if (!selected) {
             photoTile.setStyle(DEFAULT_STYLE + "-fx-effect: dropshadow(gaussian, rgba(0,0,0,0.2), 8, 0, 0, 2);");
         }
     }
 
+    /**
+     * Handles mouse exiting the tile area to remove hover style.
+     *
+     * @param event The MouseEvent triggering this action.
+     */
     private void handleMouseExit(MouseEvent event) {
         if (!selected) {
             photoTile.setStyle(DEFAULT_STYLE);
         }
     }
 
-   
-
+    /**
+     * Returns the VBox node representing this photo tile.
+     *
+     * @return The VBox of the photo tile.
+     */
     public VBox getPhotoTile() {
         return photoTile;
     }
 
+    /**
+     * Returns the Photo associated with this tile.
+     *
+     * @return The Photo object.
+     */
     public Photo getPhoto() {
         return photo;
     }
 
+    /**
+     * Returns whether this tile is currently selected.
+     *
+     * @return True if selected, false otherwise.
+     */
     public boolean isSelected() {
         return selected;
     }

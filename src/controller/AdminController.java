@@ -1,16 +1,13 @@
 package controller;
 
 import java.io.IOException;
-import java.net.URL;
 import java.util.List;
-import java.util.ResourceBundle;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -25,103 +22,117 @@ import model.User;
 import model.UserManager;
 
 /**
- * Controller for the admin subsystem.
+ * Controller for the admin subsystem. This class handles user management
+ * functionality such as creating, deleting, and listing users, as well as
+ * logging out of the admin view.
  */
 public class AdminController {
-    
+
+    /** ListView to display the list of users. */
     @FXML
     private ListView<String> userListView;
-    
+
+    /** TextField for entering a new username. */
     @FXML
     private TextField newUsernameTextField;
-    
+
+    /** Button to create a new user. */
     @FXML
     private Button createUserButton;
-    
+
+    /** Label to display the currently selected user. */
     @FXML
     private Label selectedUserLabel;
-    
+
+    /** Button to delete the selected user. */
     @FXML
     private Button deleteUserButton;
-    
+
+    /** Button to log out of the admin view. */
     @FXML
     private Button logoutButton;
-    
+
+    /** Label to display the status of operations. */
     @FXML
     private Label statusLabel;
-    
+
+    /** The UserManager instance for managing users. */
     private UserManager userManager;
+
+    /** ObservableList to hold the list of usernames for the ListView. */
     private ObservableList<String> userList;
-    
+
     /**
-     * Initializes the controller.
+     * Initializes the controller. Sets up the ListView, event handlers, and
+     * disables the delete button initially.
      */
     @FXML
     public void initialize() {
         // Initialize the observable list for users
         userList = FXCollections.observableArrayList();
         userListView.setItems(userList);
-        
+
         // Set up listeners
         userListView.getSelectionModel().selectedItemProperty().addListener((obs, oldVal, newVal) -> {
             if (newVal != null) {
                 selectedUserLabel.setText(newVal);
-                deleteUserButton.setDisable(newVal.equals("admin") || newVal.equals("stock"));
+                deleteUserButton.setDisable(newVal.equals("admin"));
             } else {
                 selectedUserLabel.setText("No user selected");
                 deleteUserButton.setDisable(true);
             }
         });
-        
+
         // Set up event handlers
         createUserButton.setOnAction(this::handleCreateUser);
         deleteUserButton.setOnAction(this::handleDeleteUser);
         logoutButton.setOnAction(this::handleLogout);
-        
+
         // Disable delete button initially
         deleteUserButton.setDisable(true);
     }
-    
+
     /**
-     * Sets the user manager.
+     * Sets the UserManager instance for this controller.
      * 
-     * @param userManager The user manager.
+     * @param userManager The UserManager instance.
      */
     public void setUserManager(UserManager userManager) {
         this.userManager = userManager;
         refreshUserList();
     }
-    
+
     /**
-     * Refreshes the list of users.
+     * Refreshes the list of users displayed in the ListView.
      */
     private void refreshUserList() {
         userList.clear();
-        
+
         List<User> users = userManager.getAllUsers();
         for (User user : users) {
             userList.add(user.getUsername());
         }
     }
-    
+
     /**
-     * Handles the create user button click event.
+     * Handles the creation of a new user. Validates the input and updates the
+     * user list if the user is successfully created.
      * 
-     * @param event The action event.
+     * @param event The ActionEvent triggered by the create user button.
      */
     private void handleCreateUser(ActionEvent event) {
         String username = newUsernameTextField.getText().trim();
-        
+
         if (username.isEmpty()) {
             showAlert("Error", "Username cannot be empty.");
             return;
         }
-        
+
         if (userManager.userExists(username)) {
             showAlert("Error", "User already exists: " + username);
             return;
         }
-        
+
         boolean success = userManager.createUser(username);
         if (success) {
             statusLabel.setText("User created: " + username);
@@ -131,31 +142,27 @@ public class AdminController {
             showAlert("Error", "Failed to create user.");
         }
     }
-    
+
     /**
-     * Handles the delete user button click event.
+     * Handles the deletion of a selected user. Validates the selection and
+     * updates the user list if the user is successfully deleted.
      * 
-     * @param event The action event.
+     * @param event The ActionEvent triggered by the delete user button.
      */
-    // Inside handleDeleteUser method in AdminController.java
     private void handleDeleteUser(ActionEvent event) {
         String username = userListView.getSelectionModel().getSelectedItem();
-        
+
         if (username == null || username.isEmpty()) {
             showAlert("Error", "No user selected.");
             return;
         }
-        
+
         if (username.equals("admin")) {
             showAlert("Error", "Cannot delete the admin user.");
             return;
         }
-        
-        if (username.equals("stock")) {
-            showAlert("Error", "Cannot delete the stock user.");
-            return;
-        }
-        
+
+
         boolean success = userManager.deleteUser(username);
         if (success) {
             statusLabel.setText("User deleted: " + username);
@@ -164,19 +171,19 @@ public class AdminController {
             showAlert("Error", "Failed to delete user.");
         }
     }
-    
+
     /**
-     * Handles the logout button click event.
+     * Handles the logout action. Navigates back to the login view.
      * 
-     * @param event The action event.
+     * @param event The ActionEvent triggered by the logout button.
      */
     private void handleLogout(ActionEvent event) {
         userManager.logout();
-        
+
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/Login.fxml"));
             Parent root = loader.load();
-            
+
             Scene scene = new Scene(root);
             Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
             stage.setTitle("Photo App - Login");
@@ -187,12 +194,12 @@ public class AdminController {
             showAlert("Error", "Failed to load login view.");
         }
     }
-    
+
     /**
-     * Shows an alert dialog.
+     * Displays an alert dialog with the specified title and message.
      * 
-     * @param title The alert title.
-     * @param message The alert message.
+     * @param title   The title of the alert.
+     * @param message The message to display in the alert.
      */
     private void showAlert(String title, String message) {
         Alert alert = new Alert(AlertType.ERROR);
@@ -201,6 +208,4 @@ public class AdminController {
         alert.setContentText(message);
         alert.showAndWait();
     }
-
-    
 }
