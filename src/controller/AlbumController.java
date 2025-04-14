@@ -39,6 +39,8 @@ public class AlbumController {
     private Button renameAlbumButton;
     @FXML
     private Button deleteAlbumButton;
+    @FXML
+    private Button searchButton;
 
     private UserManager userManager;
     private User currentUser;
@@ -72,6 +74,8 @@ public class AlbumController {
         // Disable rename and delete buttons initially
         renameAlbumButton.setDisable(true);
         deleteAlbumButton.setDisable(true);
+
+        searchButton.setOnAction(this::handleSearch);
     }
 
     private void handleCreateAlbum(ActionEvent event) {
@@ -146,6 +150,22 @@ public class AlbumController {
         userManager.saveUsers();
     }
 
+    private void handleSearch(ActionEvent event) {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/Search.fxml"));
+            Parent root = loader.load();
+    
+            SearchController searchController = loader.getController();
+            searchController.setUserManager(userManager);
+    
+            Stage stage = (Stage) searchButton.getScene().getWindow();
+            stage.setScene(new Scene(root));
+            stage.setTitle("Photo App - Search");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+    
     private void handleLogout(ActionEvent event) {
         userManager.logout();
         

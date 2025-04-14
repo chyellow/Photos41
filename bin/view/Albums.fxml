@@ -23,14 +23,14 @@
                   <Insets left="20.0" />
                </HBox.margin>
             </Label>
-            <HBox alignment="CENTER_RIGHT" HBox.hgrow="ALWAYS">
+            <HBox alignment="CENTER_RIGHT" HBox.hgrow="ALWAYS" spacing="10.0">
                <children>
-                  <Button fx:id="logoutButton" mnemonicParsing="false" style="-fx-background-color: white;" text="Logout">
-                     <HBox.margin>
-                        <Insets right="20.0" />
-                     </HBox.margin>
-                  </Button>
+                  <Button text="Search Photos" fx:id="searchButton" style="-fx-background-color: #45b6ff;" textFill="WHITE"/>
+                  <Button text="Logout" fx:id="logoutButton" style="-fx-background-color: #ff4545;" textFill="WHITE"/>
                </children>
+               <padding>
+                  <Insets right="20.0"/>
+               </padding>
             </HBox>
          </children>
       </HBox>
