@@ -32,7 +32,6 @@ public class UserManager {
             createUser("stock");
             initializeStockUser();
         }
-        initializeStockUser();
     }
     
     private void initializeStockUser() {
