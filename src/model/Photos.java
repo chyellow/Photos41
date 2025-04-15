@@ -9,7 +9,7 @@ import javafx.stage.Stage;
 /**
  * Main application class for the Photo App.
  */
-public class PhotoApp extends Application {
+public class Photos extends Application {
 
     /**
      * Starts the JavaFX application.

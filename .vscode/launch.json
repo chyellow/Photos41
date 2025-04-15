@@ -4,8 +4,8 @@
       {
           "type": "java",
           "request": "launch",
-          "name": "Launch PhotoApp",
-          "mainClass": "model.PhotoApp",
+          "name": "Launch Photos",
+          "mainClass": "model.Photos",
           "vmArgs": "--module-path 'C:/Program Files/Java/javafx-sdk-21.0.6/lib' --add-modules javafx.controls,javafx.fxml"
       }
   ]
